@@ -1,0 +1,110 @@
+/* App.css */
+
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container */
+.container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Header */
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+/* Form */
+form {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+input {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #007bff;
+}
+
+button {
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Error message */
+p {
+    color: red;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* List of Entries */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f9f9f9;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button {
+    margin-left: 10px;
+}
+
+/* Button Styling */
+button {
+    padding: 6px 12px;
+    font-size: 14px;
+}
+
+button.edit {
+    background-color: #28a745;
+}
+
+button.edit:hover {
+    background-color: #218838;
+}
+
+button.delete {
+    background-color: #dc3545;
+}
+
+button.delete:hover {
+    background-color: #c82333;
+}
