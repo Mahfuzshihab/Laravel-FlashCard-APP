@@ -6,16 +6,18 @@ import axios from "axios";
 const FlashCard = () => {
     const [fav, setFav] = useState([]);
     useEffect(() => {
-        let saved = localStorage.getItem("fav") || [];
+        let saved = JSON.parse(localStorage.getItem("fav")) || [];
         setFav(saved);
-        console.log(saved);
     }, []);
 
     async function saveFavourite(data) {
         try {
             let save = await axios.post("/api/savefavword", data);
-            setFav((prev) => [...prev, data]);
-            localStorage.setItem("fav", JSON.stringify(fav));
+            setFav((prev) => {
+                let updated = [...prev, data];
+                localStorage.setItem("fav", JSON.stringify(updated));
+                return updated;
+            });
             console.log("saved on the database");
         } catch (err) {
             console.log("got this error", err);
@@ -24,8 +26,11 @@ const FlashCard = () => {
     async function removeFavourites(data) {
         try {
             let remove = await axios.post("/api/deletefavword", data);
-            setFav((prev) => prev.filter((fav) => fav.wordFi != data.wordFi));
-            localStorage.setItem("fav", JSON.stringify(fav));
+            setFav((prev) => {
+                let updated = prev.filter((fav) => fav.wordFi != data.wordFi);
+                localStorage.setItem("fav", JSON.stringify(updated));
+                return updated;
+            });
             console.log("removed from the Backend");
         } catch (err) {
             console.log("got this error, on removing", err);
@@ -33,17 +38,21 @@ const FlashCard = () => {
     }
 
     function decideDeleteOrAdd(data) {
-        if (fav.includes(data.wordFi && data.wordEn)) {
-            removeFavourites(data);
-        } else {
+        let IsArrayExist = fav.filter((single) => {
+            return single.wordEn == data.wordEn && single.wordFn == data.wordFn;
+        });
+        console.log(IsArrayExist.length !== 0);
+        if (IsArrayExist.length == 0) {
             saveFavourite(data);
+        } else {
+            removeFavourites(data);
         }
     }
     return (
         <div>
             <h1>I am flashcard here</h1>
             <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-                {data.map((data, idx) => {
+                {data.map((card, idx) => {
                     return (
                         <div className={styles.card} key={idx}>
                             <input
@@ -60,22 +69,24 @@ const FlashCard = () => {
                                     <span
                                         className={styles.favorite}
                                         style={{
-                                            color: fav.includes(data.wordFi)
+                                            color: fav.some(
+                                                (c) => c.wordFi === card.wordFi
+                                            )
                                                 ? "rgb(255, 149, 0)"
                                                 : "#bbb",
                                         }}
                                         onClick={() => {
-                                            decideDeleteOrAdd(data);
+                                            decideDeleteOrAdd(card);
                                         }}
                                     >
                                         ★
                                     </span>
 
                                     <h3 className={styles.word}>
-                                        {data.wordFi}
+                                        {card.wordFi}
                                     </h3>
                                     <p className={styles.meaning}>
-                                        {data.exampleFi}
+                                        {card.exampleFi}
                                     </p>
                                 </div>
 
@@ -83,22 +94,24 @@ const FlashCard = () => {
                                     <span
                                         className={styles.favorite}
                                         style={{
-                                            color: fav.includes(data.wordEn)
+                                            color: fav.some(
+                                                (c) => c.wordEn === card.wordEn
+                                            )
                                                 ? "rgb(255, 149, 0)"
                                                 : "#bbb",
                                         }}
                                         onClick={() => {
-                                            decideDeleteOrAdd(data);
+                                            decideDeleteOrAdd(card);
                                         }}
                                     >
                                         ★
                                     </span>
 
                                     <h4 className={styles.exampleTitle}>
-                                        {data.wordEn}
+                                        {card.wordEn}
                                     </h4>
                                     <p className={styles.example}>
-                                        {data.exampleEn}
+                                        {card.exampleEn}
                                     </p>
                                 </div>
                             </label>
